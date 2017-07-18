@@ -1,0 +1,47 @@
+<h1>Basic Usage</h1>
+
+<div class="row">
+  <div class="col-sm-6">
+
+
+    <form [formGroup]="basicFormGroup">
+
+      <div class="form-group has-feedback" [ngClass]="(vW.invalid && vW.touched)?'has-warning':''">
+        <label>Long word
+          <small>(target view and model)</small>
+        </label>
+        <input type="text" class="form-control"
+               [formControlName]="'name'" [validatorWarning]="vWNameConfig" #vW="validatorWarning">
+        <small id="name1Help" class="form-text text-muted">
+          <p *ngIf="vW.warnings.minlength">This field is not really long. Consider using a longer one.</p>
+        </small>
+      </div>
+    </form>
+
+    <div class="row">
+      <div class="col-sm-4">
+        <h3>Static properties</h3>
+        <ul>
+          <li>invalid: {{vW.invalid}}</li>
+          <li>valid: {{vW.valid}}</li>
+          <li>status: {{vW.status}}</li>
+          <li>dirty: {{vW.dirty}}</li>
+          <li>pending: {{vW.pending}}</li>
+          <li>pristine: {{vW.pristine}}</li>
+          <li>touched: {{vW.touched}}</li>
+          <li>untouched: {{vW.untouched}}</li>
+          <li>warnings: {{vW.errors}}</li>
+        </ul>
+      </div>
+      <div class="col-sm-4">
+        <h3>Warnings</h3>
+        Warings:
+        <pre>{{vW.warnings | json}}</pre>
+      </div>
+      <div class="col-sm-4">
+        Status:{{vW.statusChanges | async}}
+      </div>
+    </div>
+
+  </div>
+</div>

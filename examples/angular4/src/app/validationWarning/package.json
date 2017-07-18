@@ -1,0 +1,30 @@
+{
+  "name": "angular-validation-warning",
+  "version": "0.1.9",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BioPhoton/angular-validation-warning"
+  },
+  "author": {
+    "name": "Michael Hladky",
+    "email": "michael@hladky.at"
+  },
+  "keywords": [
+    "angular",
+    "formatter",
+    "parser",
+    "input mask"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BioPhoton/angular-validation-warning/issues"
+  },
+  "module": "angular-validation-warning.js",
+  "typings": "angular-validation-warning.d.ts",
+  "peerDependencies": {
+    "@angular/core": "^4.0.0",
+    "@angular/forms": "^4.0.0",
+    "rxjs": "^5.1.0",
+    "zone.js": "^0.8.4"
+  }
+}
