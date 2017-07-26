@@ -1,9 +1,9 @@
 {
-  "name": "angular-validation-warning",
+  "name": "angular-alternative-validation",
   "version": "0.1.9",
   "repository": {
     "type": "git",
-    "url": "https://github.com/BioPhoton/angular-validation-warning"
+    "url": "https://github.com/BioPhoton/angular-alternative-validation"
   },
   "author": {
     "name": "Michael Hladky",
@@ -17,10 +17,10 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/BioPhoton/angular-validation-warning/issues"
+    "url": "https://github.com/BioPhoton/angular-alternative-validation/issues"
   },
-  "module": "angular-validation-warning.js",
-  "typings": "angular-validation-warning.d.ts",
+  "module": "angular-alternative-validation.js",
+  "typings": "angular-alternative-validation.d.ts",
   "peerDependencies": {
     "@angular/core": "^4.0.0",
     "@angular/forms": "^4.0.0",

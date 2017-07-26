@@ -21,7 +21,7 @@ import { AngularMessagesModule } from './angular-messages/angular-messages.modul
     BrowserModule,
     AppRoutingModule,
     AngularMessagesModule.forRoot(),
-    ValidationWarningModule.forRoot(),
+    AlternativeValidationModule.forRoot(),
     CoreModule
   ],
   bootstrap: [AppComponent]

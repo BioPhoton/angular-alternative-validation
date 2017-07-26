@@ -4,7 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { ValidationService } from './validation.service';
 
-export * from './validator-warning.directive';
+export * from './alternative-validation.directive';
 export * from './validation.service';
 
 
@@ -16,11 +16,11 @@ export * from './validation.service';
     declarations: [],
     exports: [ ReactiveFormsModule]
 })
-export class ValidationWarningModule {
+export class AlternativeValidationModule {
 
     static forRoot(): ModuleWithProviders {
         return {
-            ngModule: ValidationWarningModule,
+            ngModule: AlternativeValidationModule,
             providers: [
                 ValidationService
             ]
