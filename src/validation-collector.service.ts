@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import {IValidatorConfig} from './struct/validator-config';
 @Injectable()
-export class ValidationService {
+export class ValidationCollectorService {
 
   constructor(
     @Optional() @Inject(NG_VALIDATORS) private NG_VALIDATORS: ValidatorFn[],

@@ -2,21 +2,15 @@ import {
   Directive,
   ElementRef,
   forwardRef,
-  Host,
   HostListener,
   Input,
+  OnChanges,
   OnInit,
-  Optional,
-  SkipSelf
-} from '@angular/core';
-import {
-  ControlContainer,
-  FormControl,
-  NG_VALUE_ACCESSOR,
-  ValidationErrors
-} from '@angular/forms';
-import {IAlternativeValidationConfig} from './struct/alternative-validation-config';
-import {ValidationService} from './validation.service';
+  SimpleChanges
+} from '@angular/core'
+import {FormControl, NG_VALUE_ACCESSOR, ValidationErrors} from '@angular/forms'
+import {IAlternativeValidationConfig} from './struct/alternative-validation-config'
+import {ValidationCollectorService} from './validation-collector.service'
 
 const CONTROL_VALUE_ACCESSOR = {
   name: 'alternativeValidationValueAccessor',
@@ -32,15 +26,12 @@ const CONTROL_VALUE_ACCESSOR = {
   ],
   exportAs: 'alternativeValidation'
 })
-export class AlternativeValidationDirective implements OnInit {
-
-  @Input('alternativeValidation')
-  config: IAlternativeValidationConfig;
+export class AlternativeValidationDirective implements OnChanges, OnInit {
 
   @Input()
-  formControlName: string;
+  alternativeValidation: IAlternativeValidationConfig;
+
   // Container component reference
-  private realFormControl: FormControl;
   private formControl: FormControl;
 
   // html input reference
@@ -56,14 +47,14 @@ export class AlternativeValidationDirective implements OnInit {
   untouched: boolean;
   errors: ValidationErrors | null;
 
-  private onTouch: Function;
-  private onModelChange: Function;
+  onTouch: Function;
+  onModelChange: Function;
 
   constructor(
     private _elementRef: ElementRef,
-    private vs: ValidationService,
-    @Optional() @Host() @SkipSelf() private fcd: ControlContainer
+    private vs: ValidationCollectorService
   ) {
+    this.updateValidations();
   }
 
   registerOnTouched(fn) {
@@ -74,8 +65,11 @@ export class AlternativeValidationDirective implements OnInit {
     this.onModelChange = fn;
   }
 
+  ngOnChanges(chamges: SimpleChanges) {
+    this.updateValidations();
+  }
+
   ngOnInit(): void {
-    this.realFormControl = (<any>this.fcd).form.controls[this.formControlName];
     this.inputElement = this.getInputElementRef();
     this.updateValidations();
   }
@@ -83,22 +77,31 @@ export class AlternativeValidationDirective implements OnInit {
   // Parser: View to Model
   @HostListener('input', ['$event'])
   onControlInput($event: KeyboardEvent) {
-    const rawValue: any = this.inputElement.value;
+    this.updateFakeValue(this.inputElement.value);
+    this.onModelChange(this.inputElement.value);
     this.onTouch();
-    this.onModelChange(rawValue);
-    this.updateFakeControl(rawValue);
+    this.updateFakeTouch(true);
   }
 
   // Formatter: Model to View
   writeValue(rawValue: any): void {
-    this.updateFakeControl(rawValue);
-    this.onTouch();
-    this.onModelChange(rawValue);
+    this.updateFakeValue(rawValue);
   }
 
-  updateFakeControl(value): void {
+  @HostListener('blur', ['$event'])
+  onBlur() {
+    this.onTouch();
+    this.updateFakeTouch(true);
+  }
 
-    if (!this.config || !this.realFormControl) {
+  updateFakeTouch(state: boolean) {
+    this.touched = state;
+    this.untouched = !this.touched;
+  }
+
+  updateFakeValue(value): void {
+
+    if (!this.alternativeValidation) {
       return;
     }
 
@@ -110,22 +113,30 @@ export class AlternativeValidationDirective implements OnInit {
     this.dirty = this.formControl.dirty;
     this.pending = this.formControl.pending;
     this.pristine = this.formControl.pristine;
-    this.touched = this.formControl.touched;
-    this.untouched = this.formControl.untouched;
     this.errors = this.formControl.errors;
 
   }
 
   updateValidations(): void {
 
-    if (!this.config) {
+    if (!this.alternativeValidation) {
       return;
     }
 
-    const validationFunctions = this.vs.getValidators(this.config.validator);
-    const asyncValidationFunctions = this.vs.getAsyncValidators(this.config.asyncValidator);
-    this.formControl = new FormControl(this.realFormControl.value, validationFunctions, asyncValidationFunctions);
-    this.updateFakeControl(this.realFormControl.value);
+    const validationFunctions = this.vs.getValidators(this.alternativeValidation.validator);
+    const asyncValidationFunctions = this.vs.getAsyncValidators(this.alternativeValidation.asyncValidator);
+
+    this.formControl = new FormControl('', validationFunctions, asyncValidationFunctions);
+    this.updateFakeTouch(false);
+    this.updateFakeValue('');
+  }
+
+  hasError(errorCode: string, path?: string[]): boolean {
+    return this.formControl ? this.formControl.hasError(errorCode, path) : false;
+  }
+
+  getError(errorCode: string, path?: string[]): any {
+    return this.formControl ? this.formControl.getError(errorCode, path) : null;
   }
 
   // get a safe ref to the input element

@@ -21,8 +21,8 @@
     "annotateForClosureCompiler": true,
     "strictMetadataEmit": true,
     "skipTemplateCodegen": true,
-    "flatModuleOutFile": "angular-formatter-parser.js",
-    "flatModuleId": "angular-formatter-parser"
+    "flatModuleOutFile": "angular-alternative-validation.js",
+    "flatModuleId": "angular-alternative-validation"
   },
   "files": [
     "./index.ts"

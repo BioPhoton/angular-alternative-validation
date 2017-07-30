@@ -4,7 +4,7 @@ import {AbstractControl, FormControl, FormGroup} from '@angular/forms';
 import {By} from '@angular/platform-browser';
 import {IAlternativeValidationConfig} from './struct/alternative-validation-config';
 import {AlternativeValidationModule} from './index';
-import {ValidationService} from './validation.service';
+import {ValidationCollectorService} from './validation-collector.service';
 
 @Component({
   template: `
@@ -50,7 +50,7 @@ describe('AlternativeValidationDirective', () => {
         TestComponent
       ],
       providers: [
-        ValidationService
+        ValidationCollectorService
       ]
     });
     fixture = TestBed.createComponent(TestComponent);
@@ -64,7 +64,10 @@ describe('AlternativeValidationDirective', () => {
   it('should stay valid if input changes', () => {
     fixture.detectChanges();
     expect(target1InputControl.value).toBe('');
-    target1InputControl.setValue('12');
+    expect(target1InputControl.valid).toBe(true);
+    setInputValue(target1Input, '12');
+    expect(target1InputControl.value).toBe('12');
+    expect(target1InputControl.valid).toBe(true);
   });
 
 });
