@@ -77,7 +77,7 @@ describe('AlternativeValidationDirective', () => {
     expect(target1InputControl.value).toBe('');
     expect(target1InputControl.valid).toBe(true);
     setInputValue(target1Input, '12');
-    expect(target1InputControl.value).toBe('128');
+    expect(target1InputControl.value).toBe('12');
     expect(target1InputControl.valid).toBe(true);
   });
 
