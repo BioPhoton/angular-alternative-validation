@@ -1,10 +1,11 @@
-import {Component, DebugElement} from '@angular/core';
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {AbstractControl, FormControl, FormGroup} from '@angular/forms';
-import {By} from '@angular/platform-browser';
-import {IAlternativeValidationConfig} from './struct/alternative-validation-config';
-import {AlternativeValidationModule} from './index';
-import {ValidationCollectorService} from './validation-collector.service';
+import {Component, DebugElement, ViewChild} from '@angular/core'
+import {ComponentFixture, TestBed} from '@angular/core/testing'
+import {AbstractControl, FormControl, FormGroup} from '@angular/forms'
+import {By} from '@angular/platform-browser'
+import {AlternativeValidationDirective} from './alternative-validation.directive'
+import {AlternativeValidationModule} from './index'
+import {IAlternativeValidationConfig} from './struct/alternative-validation-config'
+import {ValidationCollectorService} from './validation-collector.service'
 
 @Component({
   template: `
@@ -20,15 +21,19 @@ class TestComponent {
   });
   config: IAlternativeValidationConfig = {
     validator: [
-      {name: 'toUpperCase'}
+      {name: 'required'},
+      {name: 'minLength', params: [3]}
     ],
     asyncValidator: []
   };
+
+  @ViewChild(AlternativeValidationDirective)
+  exposedTarget1
 }
 
 describe('AlternativeValidationDirective', () => {
 
-  let component: TestComponent;
+  let directive: TestComponent;
   let fixture: ComponentFixture<TestComponent>;
   let el: DebugElement;
 
@@ -54,11 +59,17 @@ describe('AlternativeValidationDirective', () => {
       ]
     });
     fixture = TestBed.createComponent(TestComponent);
-    component = fixture.componentInstance;
+    directive = fixture.componentInstance;
     el = fixture.debugElement;
 
-    target1Input = el.query(By.css('#both'));
-    target1InputControl = component.fg.get('both');
+    target1Input = el.query(By.css('#target1'));
+    target1InputControl = directive.fg.get('target1');
+  });
+
+  it('should create an instance', () => {
+    expect(directive).toBeTruthy();
+    expect(target1Input).toBeTruthy();
+    expect(target1InputControl).toBeTruthy();
   });
 
   it('should stay valid if input changes', () => {
@@ -68,6 +79,30 @@ describe('AlternativeValidationDirective', () => {
     setInputValue(target1Input, '12');
     expect(target1InputControl.value).toBe('12');
     expect(target1InputControl.valid).toBe(true);
+  });
+
+  it('should stay changes state of alternative validation', () => {
+    fixture.detectChanges();
+
+    // initial state
+    expect(target1InputControl.value).toBe('');
+    expect(directive.exposedTarget1.hasError('required')).toBe(true);
+    expect(directive.exposedTarget1.hasError('minlength')).toBe(false);
+    expect(directive.exposedTarget1.valid).toBe(false);
+
+    // first validation
+    setInputValue(target1Input, '12');
+    expect(target1InputControl.value).toBe('12');
+    expect(directive.exposedTarget1.hasError('required')).toBe(false);
+    expect(directive.exposedTarget1.hasError('minlength')).toBe(true);
+    expect(directive.exposedTarget1.valid).toBe(false);
+
+    // second validation
+    setInputValue(target1Input, '123');
+    expect(target1InputControl.value).toBe('123');
+    expect(directive.exposedTarget1.hasError('required')).toBe(false);
+    expect(directive.exposedTarget1.hasError('minlength')).toBe(false);
+    expect(directive.exposedTarget1.valid).toBe(true);
   });
 
 });
