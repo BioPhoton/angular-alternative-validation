@@ -1,34 +1,45 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { IValidatorWarningConfig } from '../../validatorWarning/struct/validator-warning-config';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core'
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms'
+import {IAlternativeValidationConfig} from 'angular-alternative-validation/struct/alternative-validation-config'
+import {AlternativeValidationDirective} from 'angular-alternative-validation'
 
 @Component({
-  selector: 'app-basic-usage',
+  selector: 'basic-usage',
   templateUrl: './basic-usage.component.html',
-  styleUrls: ['./basic-usage.component.scss'],
+  styleUrls: ['./basic-usage.component.scss']
 })
-export class BasicUsageComponent implements OnInit {
+export class BasicUsageComponent implements OnInit, AfterViewInit {
+
 
   basicFormGroup: FormGroup;
+  nameInput: FormControl
 
-  vWNameConfig: IValidatorWarningConfig;
+  avNameConfig: IAlternativeValidationConfig;
+
+  @ViewChild(AlternativeValidationDirective)
+  ref
 
   constructor(private fb: FormBuilder) {
     this.basicFormGroup = this.fb.group(
       {
-        longName: []
+        name: ['', Validators.minLength(3)]
       }
-      );
+    );
 
-    this.vWNameConfig = {
-      validatorWarning: [ {name: "minlength", params: [3]} ],
-      asyncValidatorWarning: []
-    }
+    this.avNameConfig = {
+      validator: [
+        {name: 'validName'}
+      ]
+    };
 
   }
 
   ngOnInit() {
+    this.nameInput = this.basicFormGroup.get('name') as FormControl
+  }
 
+  ngAfterViewInit() {
+    console.log('Reference to the directive', this.ref);
   }
 
 }
