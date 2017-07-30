@@ -13,136 +13,143 @@
           #aV="alternativeValidation">
       </div>
     </form>
-      <div class="row">
-        <div class="col">
+    <div class="row">
+      <div class="col">
 
-          <div class="card">
-            <div class="card-header">
-              <h4>Validation:</h4>
-            </div>
-            <div *ngIf="nameInput.hasError('minlength') && nameInput.touched"
-              class="card-block bg-danger text-white"
-              id="name1Error">
-              <b>Min length is 3</b>
-            </div>
-            <div class="card-block">
-              <div class="row">
+        <div class="card">
+          <div class="card-header">
+            <h4>Validation:</h4>
+          </div>
+          <div *ngIf="nameInput.hasError('minlength') && nameInput.touched"
+            class="card-block bg-danger text-white"
+            id="name1Error">
+            <b>Min length is 3</b>
+          </div>
+          <div class="card-block">
+            <div class="row">
 
-                <div class="col-3"><b>valid</b></div>
-                <div class="col-3 {{nameInput.valid?'text-success':'text-danger'}}">
-                  {{nameInput.valid }}
-                </div>
+              <div class="col-3"><b>valid</b></div>
+              <div
+                class="col-3 {{nameInput.valid?'text-success':'text-danger'}}">
+                {{nameInput.valid }}
+              </div>
 
-                <div class="col-3"><b>invalid</b></div>
-                <div class="col-3 {{nameInput.invalid?'text-success':'text-danger'}}">
-                  {{nameInput.invalid }}
-                </div>
+              <div class="col-3"><b>invalid</b></div>
+              <div
+                class="col-3 {{nameInput.invalid?'text-success':'text-danger'}}">
+                {{nameInput.invalid }}
+              </div>
 
-                <div class="col-3"><b>status</b></div>
-                <div class="col-3" [ngClass]="{
+              <div class="col-3"><b>status</b></div>
+              <div class="col-3" [ngClass]="{
                 'text-success': nameInput.status==='VALID',
                 'text-danger': nameInput.status==='INVALID',
                 'text-info': nameInput.status==='PENDING'
                 }">{{nameInput.status}}
-                </div>
+              </div>
 
-                <div class="col-3"><b>pending</b></div>
-                <div class="col-3 {{nameInput.pending?'text-success':'text-danger'}}">
-                  {{nameInput.pending}}
-                </div>
+              <div class="col-3"><b>pending</b></div>
+              <div
+                class="col-3 {{nameInput.pending?'text-success':'text-danger'}}">
+                {{nameInput.pending}}
+              </div>
 
-                <div class="col-3"><b>pristine</b></div>
-                <div class="col-3 {{nameInput.pristine?'text-success':'text-danger'}}">
-                  {{nameInput.pristine}}
-                </div>
-                <div class="col-3"><b>dirty</b></div>
-                <div class="col-3 {{nameInput.dirty?'text-success':'text-danger'}}">
-                  {{nameInput.dirty}}
-                </div>
+              <div class="col-3"><b>pristine</b></div>
+              <div
+                class="col-3 {{nameInput.pristine?'text-success':'text-danger'}}">
+                {{nameInput.pristine}}
+              </div>
+              <div class="col-3"><b>dirty</b></div>
+              <div
+                class="col-3 {{nameInput.dirty?'text-success':'text-danger'}}">
+                {{nameInput.dirty}}
+              </div>
 
-                <div class="col-3"><b>touched</b></div>
-                <div class="col-3 {{nameInput.touched?'text-success':'text-danger'}}">
-                  {{nameInput.touched}}
-                </div>
+              <div class="col-3"><b>touched</b></div>
+              <div
+                class="col-3 {{nameInput.touched?'text-success':'text-danger'}}">
+                {{nameInput.touched}}
+              </div>
 
-                <div class="col-3"><b>untouched</b></div>
-                <div class="col-3 {{nameInput.untouched?'text-success':'text-danger'}}">
-                  {{nameInput.untouched}}
-                </div>
-
+              <div class="col-3"><b>untouched</b></div>
+              <div
+                class="col-3 {{nameInput.untouched?'text-success':'text-danger'}}">
+                {{nameInput.untouched}}
               </div>
 
             </div>
-          </div>
 
+          </div>
         </div>
 
-        <div class="col">
+      </div>
 
-          <div class="card ">
-            <div class="card-header">
-              <h4>Alternative Validation:</h4>
-            </div>
-            <div *ngIf="aV.hasError('validName') && aV.touched"
-              id="name1Info"
-              class="card-block bg-info text-white">
-              <b>
-                We like names that include: <br/>
-                {{aV.getError('validName').validNames | json}}
-              </b>
-            </div>
-            <div class="card-block">
-              <div class="row">
+      <div class="col">
 
-                <div class="col-3"><b>valid</b></div>
-                <div class="col-3 {{aV.valid?'text-success':'text-danger'}}">
-                  {{aV.valid }}
-                </div>
+        <div class="card ">
+          <div class="card-header">
+            <h4>Alternative Validation:</h4>
+          </div>
+          <div *ngIf="aV.hasError('validName') && aV.touched"
+            id="name1Info"
+            class="card-block bg-info text-white">
+            <b>
+              We like names that include: <br/>
+              {{aV.getError('validName').validNames | json}}
+            </b>
+          </div>
+          <div class="card-block">
+            <div class="row">
 
-                <div class="col-3"><b>invalid</b></div>
-                <div class="col-3 {{aV.invalid?'text-success':'text-danger'}}">
-                  {{aV.invalid }}
-                </div>
+              <div class="col-3"><b>valid</b></div>
+              <div class="col-3 {{aV.valid?'text-success':'text-danger'}}">
+                {{aV.valid }}
+              </div>
 
-                <div class="col-3"><b>status</b></div>
-                <div class="col-3" [ngClass]="{
+              <div class="col-3"><b>invalid</b></div>
+              <div class="col-3 {{aV.invalid?'text-success':'text-danger'}}">
+                {{aV.invalid }}
+              </div>
+
+              <div class="col-3"><b>status</b></div>
+              <div class="col-3" [ngClass]="{
                 'text-success': aV.status==='VALID',
                 'text-danger': aV.status==='INVALID',
                 'text-info': aV.status==='PENDING'
                 }">{{aV.status}}
-                </div>
+              </div>
 
-                <div class="col-3"><b>pending</b></div>
-                <div class="col-3 {{aV.pending?'text-success':'text-danger'}}">
-                  {{aV.pending}}
-                </div>
+              <div class="col-3"><b>pending</b></div>
+              <div class="col-3 {{aV.pending?'text-success':'text-danger'}}">
+                {{aV.pending}}
+              </div>
 
-                <div class="col-3"><b>pristine</b></div>
-                <div class="col-3 {{aV.pristine?'text-success':'text-danger'}}">
-                  {{aV.pristine}}
-                </div>
-                <div class="col-3"><b>dirty</b></div>
-                <div class="col-3 {{aV.dirty?'text-success':'text-danger'}}">
-                  {{aV.dirty}}
-                </div>
+              <div class="col-3"><b>pristine</b></div>
+              <div class="col-3 {{aV.pristine?'text-success':'text-danger'}}">
+                {{aV.pristine}}
+              </div>
+              <div class="col-3"><b>dirty</b></div>
+              <div class="col-3 {{aV.dirty?'text-success':'text-danger'}}">
+                {{aV.dirty}}
+              </div>
 
-                <div class="col-3"><b>touched</b></div>
-                <div class="col-3 {{aV.touched?'text-success':'text-danger'}}">
-                  {{aV.touched}}
-                </div>
+              <div class="col-3"><b>touched</b></div>
+              <div class="col-3 {{aV.touched?'text-success':'text-danger'}}">
+                {{aV.touched}}
+              </div>
 
-                <div class="col-3"><b>untouched</b></div>
-                <div class="col-3 {{aV.untouched?'text-success':'text-danger'}}">
-                  {{aV.untouched}}
-                </div>
-
+              <div class="col-3"><b>untouched</b></div>
+              <div class="col-3 {{aV.untouched?'text-success':'text-danger'}}">
+                {{aV.untouched}}
               </div>
 
             </div>
-          </div>
 
+          </div>
         </div>
+
       </div>
+    </div>
 
 
   </div>
