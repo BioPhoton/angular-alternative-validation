@@ -164,7 +164,7 @@ export class BasicUsageComponent {
 
 # What it is
 
-It provides an alternative state of the host control.  
+It provides an alternative validation state of the host control.  
 You can use it like the normal form control validation  
 but it is not effecting the actual validation of the form.  
 In this way you can reuse default validation and display user  
