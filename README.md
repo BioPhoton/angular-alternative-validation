@@ -164,7 +164,10 @@ export class BasicUsageComponent {
 
 # What it is
 
-It provides an alternative state of the host control.  
+There are many ways to build a alternative validation state. 
+Many of them can't reuse existing validators and all of them do not provide a separate state of validation. 
+
+What this library do is it provides an alternative state of the host control.  
 You can use it like the normal form control validation  
 but it is not effecting the actual validation of the form.  
 In this way you can reuse default validation and display user  
