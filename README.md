@@ -15,6 +15,28 @@
 
 ![Angular-Alternative-Validation](https://raw.githubusercontent.com/BioPhoton/angular-alternative-validation/master/resources/demo.gif)
 
+## Quick code example:
+``` typescript
+// app.component.ts
+...
+import { IAlternativeValidationConfig } from 'angular-alternative-validation/struct/alternative-validation-config';
+
+@Component({
+  selector: 'app-basic-usage',
+  template: `<input type="text"
+                    formControlName="name" 
+                    [alternativeValidation]="{validator: ['required']}"
+                    #aV="alternativeValidation">
+                    
+              {{fg.get('name').valid}} vs {{aV.valid}}`
+})
+export class BasicUsageComponent {
+...
+}
+
+```
+
+
 ## Basic Usage:
 
 #### Implement Library
@@ -50,8 +72,7 @@ import { IAlternativeValidationConfig } from 'angular-alternative-validation/str
 
 @Component({
   selector: 'app-basic-usage',
-  templateUrl: './basic-usage.component.html',
-  styleUrls: ['./basic-usage.component.scss']
+  templateUrl: './basic-usage.component.html'
 })
 export class BasicUsageComponent {
 
