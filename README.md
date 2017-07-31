@@ -72,7 +72,12 @@ import { IAlternativeValidationConfig } from 'angular-alternative-validation/str
 
 @Component({
   selector: 'app-basic-usage',
-  templateUrl: './basic-usage.component.html'
+  template: `
+  <form [formGroup]="formGroup">
+    <input type="text" formControlName="name" [alternativeValidation]="aVConfig">
+    Value: {{formGroup.get('name').value}} , Valid: {{formGroup.get('name').valid}}
+  </form>
+  `
 })
 export class BasicUsageComponent {
 
@@ -83,44 +88,15 @@ export class BasicUsageComponent {
      ]
   }
 
-  constructor() { }
-
-}
-
-```
-
-#### Create FormGroup
-
-``` typescript
-// app.component.ts
-
-...
-export class BasicUsageComponent {
-
-  aVConfig: IAlternativeValidationConfig = {
-    ...
-  }
-
   formGroup: FormGroup;
-
+  
   constructor(private fb: FormBuilder) {
     this.basicFormGroup = this.fb.group({ name: [] });
   }
 
 }
+
 ```
-
-
-#### Set formGroup and formControlName when using the alternativeValidation directive
-
-``` html
-// app.component.html
-<form [formGroup]="formGroup">
-  <input type="text" formControlName="name" [alternativeValidation]="aVConfig">
-  {{formGroup.get('name').value}}
-</form>
-```
-
 
 #### Expose the directive API in the template
 
@@ -136,7 +112,9 @@ export class BasicUsageComponent {
 ``` typescript
 // app.component.ts
 ... 
-@ViewChild  
+@ViewChild(AlternativeValidationDirective)
+ref
+  
 ...
 ```
 
