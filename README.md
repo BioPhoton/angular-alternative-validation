@@ -98,7 +98,7 @@ export class BasicUsageComponent {
 
 ```
 
-#### Expose the directive API in the template
+#### Template reference to the directive
 
 ``` html
 // app.component.html
@@ -107,14 +107,17 @@ export class BasicUsageComponent {
   {{aV.errors | json}} {{aV.valid}}
 ```
 
-#### Expose the directive API in the class
+#### A Reference to the directive in the class
 
 ``` typescript
 // app.component.ts
 ... 
 @ViewChild(AlternativeValidationDirective)
-ref
-  
+alternativeValidationRef
+...
+ngAfterViewInit() {
+    console.log('Directive referenc: ', this.alternativeValidationRef);
+  }
 ...
 ```
 
@@ -123,23 +126,12 @@ ref
 #### Create custom function
 
 ``` typescript
-
-export function myValidation(c:FormControl): ValidatorFn {
+// app.module.ts
+export function myValidation(param1, param2): ValidatorFn {
    
 }
 
-```
-
-#### Provide the function over the NG_VALIDATION token
-
-``` typescript
-// app.module.ts
-
 ...
-// IMPORT NG_VALIDATION
-import { NG_VALIDATION, FormatterParserModule } from 'angular-alternative-validation';
-...
-
 @NgModule({
   ...
   providers: [
@@ -172,6 +164,11 @@ export class BasicUsageComponent {
 
 # What it is
 
+It provides an alternative state of the host control.  
+You can use it like the normal form control validation  
+but it is not effecting the actual validation of the form.  
+In this way you can reuse default validation and display user  
+information separated from the real validation.
 
 # License
 
