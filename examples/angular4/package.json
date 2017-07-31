@@ -1,5 +1,5 @@
 {
-  "name": "test-angular-formatter-parser",
+  "name": "test-angular-alternative-validation",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
@@ -21,7 +21,7 @@
     "@angular/platform-browser": "^4.0.0",
     "@angular/platform-browser-dynamic": "^4.0.0",
     "@angular/router": "^4.0.0",
-    "angular-formatter-parser": "^0.2.0",
+    "angular-alternative-validation": "^0.2.0",
     "bootstrap": "^4.0.0-alpha.6",
     "core-js": "^2.4.1",
     "font-awesome": "^4.7.0",

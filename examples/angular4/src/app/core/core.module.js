@@ -11,7 +11,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 exports.__esModule = true;
 var common_1 = require("@angular/common");
 var core_1 = require("@angular/core");
-var angular_formatter_parser_1 = require("angular-formatter-parser");
+var angular_formatter_parser_1 = require("angular-alternative-validation");
 var mask_string_1 = require("./custom-validators/mask-string");
 var CoreModule = (function () {
     function CoreModule(parentModule) {

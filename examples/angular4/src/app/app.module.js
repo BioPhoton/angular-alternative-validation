@@ -10,7 +10,7 @@ var platform_browser_1 = require("@angular/platform-browser");
 var core_1 = require("@angular/core");
 var app_component_1 = require("./app.component");
 // Import your library
-var angular_formatter_parser_1 = require("angular-formatter-parser");
+var angular_formatter_parser_1 = require("angular-alternative-validation");
 // Project specific imports
 var basic_usage_component_1 = require("./page/basic-usage/basic-usage.component");
 var app_routing_module_1 = require("./app-routing.module");

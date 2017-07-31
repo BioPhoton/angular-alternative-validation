@@ -12,7 +12,7 @@
     "e2e": "ng e2e",
     "build:watch": "gulp",
     "docs": "npm run docs:build",
-    "docs:build": "compodoc -p tsconfig.json -n angular-formatter-parser -d docs --hideGenerator",
+    "docs:build": "compodoc -p tsconfig.json -n angular-alternative-validation -d docs --hideGenerator",
     "docs:serve": "npm run docs:build -- -s",
     "docs:watch": "npm run docs:build -- -s -w",
     "update-example": "npm run build && copyfiles -u 1 dist/**/* examples/angular4/node_modules/angular-alternative-validation",
@@ -23,7 +23,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/BioPhoton/angular-formatter-parser"
+    "url": "https://github.com/BioPhoton/angular-alternative-validation"
   },
   "author": {
     "name": "Michael Hladky",
@@ -33,7 +33,7 @@
     "angular"
   ],
   "bugs": {
-    "url": "https://github.com/BioPhoton/angular-formatter-parser/issues"
+    "url": "https://github.com/BioPhoton/angular-alternative-validation/issues"
   },
   "private": true,
   "dependencies": {
