@@ -8,7 +8,7 @@
 
 $ErrorActionPreference = "Stop"
 
-# rebuilds and test the latest verstion of the repository (a succeeded travis build is precondition)
+# rebuilds and test the latest version of the repository (a succeeded travis build is precondition)
 
 # checks the status of the last build of the current repository
 # --no-interactive disables the interactive mode
