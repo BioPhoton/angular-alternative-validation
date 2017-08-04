@@ -12,8 +12,10 @@ export class BasicUsageComponent implements OnInit, AfterViewInit {
 
 
   basicFormGroup: FormGroup;
-  nameInput: FormControl
-
+  nativeInput: FormControl;
+  basicInput: FormControl;
+  cfnInput: FormControl;
+  altInput: FormControl;
   avNameConfig: IAlternativeValidationConfig;
 
   @ViewChild(AlternativeValidationDirective)
@@ -22,7 +24,8 @@ export class BasicUsageComponent implements OnInit, AfterViewInit {
   constructor(private fb: FormBuilder) {
     this.basicFormGroup = this.fb.group(
       {
-        name: ['', Validators.minLength(3)]
+        native: ['initial', Validators.required],
+        alt: ['initial', Validators.minLength(3)]
       }
     );
 
@@ -35,11 +38,23 @@ export class BasicUsageComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.nameInput = this.basicFormGroup.get('name') as FormControl
+    this.nativeInput = this.basicFormGroup.get('native') as FormControl
+    this.basicInput = this.basicFormGroup.get('basic') as FormControl
+    this.cfnInput = this.basicFormGroup.get('cfn') as FormControl
+    this.altInput = this.basicFormGroup.get('alt') as FormControl
   }
 
   ngAfterViewInit() {
     console.log('Reference to the directive', this.ref);
+  }
+
+  resetWithValue(value) {
+    this.basicFormGroup.reset({
+      native: 'reset',
+      basic: 'reset',
+      cfn: 'reset',
+      alt: 'reset'
+    })
   }
 
 }

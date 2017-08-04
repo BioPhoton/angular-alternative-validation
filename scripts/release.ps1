@@ -106,7 +106,7 @@ conventional-github-releaser -p $preset
 Write-Host "created github release"  -foregroundcolor "green"
 
 # publish new version on npm
-# cd .\dist
-# npm publish
-# cd ..
+ cd .\dist
+ npm publish
+ cd ..
 # Write-Host "published on npm :-)"  -foregroundcolor "green"

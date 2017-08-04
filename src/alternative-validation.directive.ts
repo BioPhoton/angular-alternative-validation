@@ -2,15 +2,46 @@ import {
   Directive,
   ElementRef,
   forwardRef,
-  HostListener,
+  Host,
+  Inject,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
-  SimpleChanges
+  Optional,
+  Renderer2,
+  SimpleChanges,
+  SkipSelf
 } from '@angular/core'
-import {FormControl, NG_VALUE_ACCESSOR, ValidationErrors} from '@angular/forms'
+import {
+  AbstractControl,
+  AbstractControlDirective,
+  COMPOSITION_BUFFER_MODE,
+  ControlContainer,
+  ControlValueAccessor,
+  FormControl,
+  NG_VALUE_ACCESSOR
+} from '@angular/forms'
+import {ɵgetDOM as getDOM} from '@angular/platform-browser'
+import 'rxjs/add/observable/combineLatest'
+import 'rxjs/add/operator/filter'
+import 'rxjs/add/operator/map'
+import 'rxjs/add/operator/switchMap'
+import 'rxjs/add/operator/takeUntil'
+import {Observable} from 'rxjs/Observable'
+import {Subject} from 'rxjs/Subject'
 import {IAlternativeValidationConfig} from './struct/alternative-validation-config'
 import {ValidationCollectorService} from './validation-collector.service'
+
+/**
+ * We must check whether the agent is Android because composition events
+ * behave differently between iOS and Android.
+ */
+function isAndroid(): boolean {
+  const userAgent = getDOM() ? getDOM().getUserAgent() : '';
+  return /android (\d+)/.test(userAgent.toLowerCase());
+}
+
 
 const CONTROL_VALUE_ACCESSOR = {
   name: 'alternativeValidationValueAccessor',
@@ -21,133 +52,214 @@ const CONTROL_VALUE_ACCESSOR = {
 
 @Directive({
   selector: '[alternativeValidation]',
-  providers: [
-    CONTROL_VALUE_ACCESSOR
-  ],
+  providers: [CONTROL_VALUE_ACCESSOR],
+  host: {
+    /*
+     * Listening to the native input event of the host element.
+     * On input we call the take the value property of the target element end call
+     * the handleInput function with it. This renders the new value to the view.
+     */
+    '(input)': 'handleInput($event.target.value)',
+    /*
+     * Listening to the native focus event of the host element.
+     * On focus we call the internal haldleFocus function
+     */
+    '(focus)': 'handleFocus(true)',
+    /*
+     * Listening to the native blur event of the host element.
+     * On blur we call the onTouched function from the formControl
+     */
+    '(blur)': 'handleFocus(false)',
+    /*
+     * The compositionstart event is fired when the composition of a passage of text is prepared
+     * (similar to keydown for a keyboard input, but fires with special characters that require
+     * a sequence of keys and other inputs such as speech recognition or word suggestion on mobile).
+     */
+    '(compositionstart)': 'compositionStart()',
+    /*
+     * The compositionend event is fired when the composition of a passage of text has been completed
+     * or cancelled
+     * (fires with special characters that require a sequence of keys and other inputs such as
+     * speech recognition or word suggestion on mobile).
+     */
+    '(compositionend)': 'compositionEnd($event.target.value)'
+  },
   exportAs: 'alternativeValidation'
 })
-export class AlternativeValidationDirective implements OnChanges, OnInit {
+export class AlternativeValidationDirective extends AbstractControlDirective implements ControlValueAccessor, OnInit, OnChanges, OnDestroy {
+
+  // Reference to the fake formControl
+  control: AbstractControl;
+
+  // Reference to the formControl
+  realFormControl: AbstractControl;
 
   @Input()
-  alternativeValidation: IAlternativeValidationConfig;
+  // The formControlName in the parent
+  protected formControlName: string;
 
-  // Container component reference
-  private formControl: FormControl;
+  // The internal data model
+  private _value: any = '';
 
-  // html input reference
-  private inputElement: HTMLInputElement;
+  // The internal focus state
+  private _focus: boolean;
 
-  invalid: boolean;
-  valid: boolean;
-  status: string;
-  dirty: boolean;
-  pending: boolean;
-  pristine: boolean;
-  touched: boolean;
-  untouched: boolean;
-  errors: ValidationErrors | null;
+  // The internal disabled state
+  private _disabled: boolean;
 
-  onTouch: Function;
-  onModelChange: Function;
+  destroy$ = new Subject<boolean>();
+
+
+  // The internal state of composing input
+  protected composing = false;
+
+  @Input('alternativeValidation')
+  // The config for the alternative validation in the parent
+  protected config: IAlternativeValidationConfig;
+
+  onChange = (_: any) => {
+  };
+  onTouched = () => {
+  };
 
   constructor(
-    private _elementRef: ElementRef,
-    private vs: ValidationCollectorService
+    protected renderer: Renderer2, protected elementRef: ElementRef,
+    @Optional() @Inject(COMPOSITION_BUFFER_MODE) protected compositionMode: boolean,
+    @Optional() @Host() @SkipSelf() private parentFormContainer: ControlContainer,
+    protected vs: ValidationCollectorService
   ) {
-    this.updateValidations();
+    super();
+    if (this.compositionMode == null) {
+      this.compositionMode = !isAndroid();
+    }
   }
 
-  registerOnTouched(fn) {
-    this.onTouch = fn;
+  get focus(): boolean {
+    return this._focus
   }
 
-  registerOnChange(fn) {
-    this.onModelChange = fn;
+  set focus(value: boolean) {
+    this._focus = value
   }
 
-  ngOnChanges(chamges: SimpleChanges) {
-    this.updateValidations();
+  /*
+   * Handel formControl model changes
+   */
+  writeValue(value: any): void {
+    this.renderViewValue(value)
+  }
+
+  /*
+   * Registers the controls onChange function
+   */
+  registerOnChange(fn: (_: any) => void): void {
+    this.onChange = fn;
+  }
+
+  /*
+   * Registers the controls onTouched function
+   */
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+
+  /*
+   * Sets the internal disabled state and renders it to the view
+   */
+  setDisabledState(isDisabled: boolean): void {
+    this._disabled = isDisabled;
+    this.renderViewDisabled(isDisabled);
+  }
+
+  /*
+   * Depending on the compositionMode and the composing state it
+   * calls writeValueFromViewToModel with new value
+   */
+  private handleInput(value: any): void {
+    if (!this.compositionMode || (this.compositionMode && !this.composing)) {
+      this.writeValueFromViewToModel(value);
+    }
+  }
+
+  /*
+   * Sets the internal focus state and renders it to the view
+   * It also calls onTouch if a blur happens
+   */
+  private handleFocus(isFocus: boolean): void {
+    this.focus = isFocus;
+    if (!isFocus) {
+      this.onTouched();
+      this.updateFakeTouched(this.realFormControl.touched);
+    }
+    this.renderViewFocus(isFocus);
+  }
+
+  /*
+   * Is called when the compositionStart event is fired.
+   * It sets the internal composing state to true
+   */
+  private compositionStart(): void {
+    this.composing = true;
+  }
+
+  /*
+   * Is called when the compositionEnd event is fired
+   * It sets the internal composing state to false
+   * and triggers the onChange function with the new value.
+   */
+  private compositionEnd(value: any): void {
+    this.composing = false;
+    if (this.compositionMode) {
+      this.onChange(value);
+    }
+  }
+
+  // Directive lifecycle hooks ==================================================================
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.updateValidators()
   }
 
   ngOnInit(): void {
-    this.inputElement = this.getInputElementRef();
-    this.updateValidations();
+    this.updateFormControlRef();
   }
 
-  // Parser: View to Model
-  @HostListener('input', ['$event'])
-  onControlInput($event: KeyboardEvent) {
-    this.updateFakeValue(this.inputElement.value);
-    this.onModelChange(this.inputElement.value);
-    this.onTouch();
-    this.updateFakeTouch(true);
+  ngOnDestroy() {
+    this.destroy$.next(true);
   }
 
-  // Formatter: Model to View
-  writeValue(rawValue: any): void {
-    this.updateFakeValue(rawValue);
-  }
+  // ControlValueAccessor ==================================================================
 
-  @HostListener('blur', ['$event'])
-  onBlur() {
-    this.onTouch();
-    this.updateFakeTouch(true);
-  }
-
-  updateFakeTouch(state: boolean) {
-    this.touched = state;
-    this.untouched = !this.touched;
-  }
-
-  updateFakeValue(value): void {
-
-    if (!this.alternativeValidation) {
-      return;
+  protected writeValueFromViewToModel(value: any) {
+    if (value !== this._value) {
+      this._value = value;
+      this.onChange(value);
+      this.updateFakeValue(value);
     }
-
-    this.formControl.setValue(value);
-
-    this.invalid = this.formControl.invalid;
-    this.valid = this.formControl.valid;
-    this.status = this.formControl.status;
-    this.dirty = this.formControl.dirty;
-    this.pending = this.formControl.pending;
-    this.pristine = this.formControl.pristine;
-    this.errors = this.formControl.errors;
-
   }
 
-  updateValidations(): void {
-
-    if (!this.alternativeValidation) {
-      return;
-    }
-
-    const validationFunctions = this.vs.getValidators(this.alternativeValidation.validator);
-    const asyncValidationFunctions = this.vs.getAsyncValidators(this.alternativeValidation.asyncValidator);
-
-    this.formControl = new FormControl('', validationFunctions, asyncValidationFunctions);
-    this.updateFakeTouch(false);
-    this.updateFakeValue('');
+  protected renderViewValue(value: any) {
+    const normalizedValue = value == null ? '' : value;
+    this.renderer.setProperty(this.getInputElementRef(), 'value', normalizedValue);
   }
 
-  hasError(errorCode: string, path?: string[]): boolean {
-    return this.formControl ? this.formControl.hasError(errorCode, path) : false;
+  protected renderViewDisabled(isDisabled: boolean) {
+    this.renderer.setProperty(this.getInputElementRef(), 'disabled', isDisabled);
   }
 
-  getError(errorCode: string, path?: string[]): any {
-    return this.formControl ? this.formControl.getError(errorCode, path) : null;
+  protected renderViewFocus(isFocus: boolean): void {
+    this.renderer.setProperty(this.getInputElementRef(), 'focus', isFocus);
   }
 
   // get a safe ref to the input element
   private getInputElementRef(): HTMLInputElement {
     let input: HTMLInputElement;
-    if (this._elementRef.nativeElement.tagName === 'INPUT') {
+    if (this.elementRef.nativeElement.tagName === 'INPUT') {
       // directive is used directly on an input element
-      input = this._elementRef.nativeElement;
+      input = this.elementRef.nativeElement;
     } else {
       // directive is used on an abstracted input element, `ion-input`, `md-input`, etc
-      input = this._elementRef.nativeElement.getElementsByTagName('INPUT')[0];
+      input = this.elementRef.nativeElement.getElementsByTagName('INPUT')[0];
     }
 
     if (!input) {
@@ -155,6 +267,94 @@ export class AlternativeValidationDirective implements OnChanges, OnInit {
     }
 
     return input;
+  }
+
+  // FormControl ==================================================================
+
+  private updateFormControlRef() {
+    this.realFormControl = this.parentFormContainer['form'].controls[this.formControlName];
+
+    this.updateFakeControlRef(this.realFormControl.value);
+    this.setupResetObservable(this.realFormControl);
+  }
+
+  /*
+   * custom implementation of status getter
+   * */
+  get status(): string {
+    return this.control ? this.control.status : null;
+  }
+
+  // Reset handling ==============================================================================
+
+  private setupResetObservable(control: AbstractControl): void {
+
+    Observable.combineLatest(control.statusChanges, control.valueChanges)
+      .takeUntil(this.destroy$.asObservable())
+      .filter((controlState) => {
+        const resetState = {
+          dirty: false,
+          pristine: true,
+          touched: false,
+          untouched: true
+        };
+
+        return Object
+          .keys(resetState)
+          .reduce((state, item) => {
+            return !state ? false : control[item] === resetState[item];
+          }, true)
+      })
+      .subscribe((controlState) => {
+        this.onResetEvent(controlState);
+      })
+  }
+
+  // Alternative validation ==============================================================================
+
+  private onResetEvent(controlState) {
+    this.control.reset(this.realFormControl.value);
+  }
+
+  private updateFakeControlRef(formState: any): void {
+    this.control = new FormControl();
+    this.updateValidators();
+    this.control.reset(formState);
+  }
+
+  private updateValidators(): void {
+    if (this.config && this.control && this.control instanceof AbstractControl) {
+      if ('validator' in this.config && Array.isArray(this.config.validator)) {
+        this.control.setValidators(this.vs.getValidators(this.config.validator))
+      }
+      if ('asyncValidator' in this.config && Array.isArray(this.config.asyncValidator)) {
+        this.control.setValidators(this.vs.getAsyncValidators(this.config.asyncValidator))
+      }
+    }
+  }
+
+  private updateFakeValue(value): void {
+    if (this.control) {
+      this.control.setValue(value);
+      this.control.updateValueAndValidity(value);
+      this.updateFakeDirty(true)
+    }
+  }
+
+  private updateFakeTouched(isTouched: boolean): void {
+    if (isTouched) {
+      this.control.markAsTouched()
+    } else {
+      this.control.markAsUntouched()
+    }
+  }
+
+  private updateFakeDirty(isDirty: boolean): void {
+    if (isDirty) {
+      this.control.markAsDirty()
+    } else {
+      this.control.markAsPristine()
+    }
   }
 
 }

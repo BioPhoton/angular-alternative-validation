@@ -1,19 +1,21 @@
 import {NgModule} from '@angular/core'
 import {ReactiveFormsModule} from '@angular/forms'
 import {BrowserModule} from '@angular/platform-browser'
-// Import your library
-import {AlternativeValidationModule} from 'angular-alternative-validation'
 import {AppRoutingModule} from './app-routing.module'
 
-import {AppComponent} from './app.component'
-import {CoreModule} from './core/core.module'
-// Project specific imports
-import {BasicUsageComponent} from './page/basic-usage/basic-usage.component'
+// Import your library
+import {AlternativeValidationModule} from 'angular-alternative-validation'
 
+// Project specific imports
+import {CoreModule} from './core/core.module'
+import {AppComponent} from './app.component'
+import {BasicUsageComponent} from './page/basic-usage/basic-usage.component'
+import {ControlStateComponent} from './page/basic-usage/control-state/control-state.component'
 @NgModule({
   declarations: [
     AppComponent,
-    BasicUsageComponent
+    BasicUsageComponent,
+    ControlStateComponent
   ],
   imports: [
     BrowserModule,
