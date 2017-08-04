@@ -26,11 +26,20 @@
             formControlName="alt"
             [alternativeValidation]="avNameConfig"
             #aV="alternativeValidation">
+        <small *ngIf="altInput.hasError('minlength') && altInput.touched"
+        class="form-text text-white bg-danger">
+        A minimum length of 3 is required
+        </small>
+        <small *ngIf="!altInput.errors && aV.hasError('validName') && aV.touched"
+          class="form-text text-white bg-warning">
+          This is maybe not a name of a female singer.
+        </small>
         </div>
       </div>
       <div class="card-footer">
-        <button class="btn btn-primary btn-" type="reset">Reset</button>
-        <button class="btn btn-primary" type="button"
+        <button class="btn btn-primary" [disabled]="altInput.invalid" type="submit">Save</button>
+        <button class="btn btn-secondary" type="reset">Reset</button>
+        <button class="btn btn-secondary" type="button"
           (click)="resetWithValue('Nei')">Reset with value
         </button>
         <input type="text" autocomplete="false" class="form-control pull-right col-4"
