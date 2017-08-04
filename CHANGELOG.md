@@ -1,3 +1,13 @@
+<a name="0.3.6"></a>
+## [0.3.6](https://github.com/BioPhoton/angular-alternative-validation/compare/0.3.9...0.3.6) (2017-08-04)
+
+
+### Bug Fixes
+
+* **implement AbstractControlDirective:** implemented AbstractControlDirective and updated example ([44e711c](https://github.com/BioPhoton/angular-alternative-validation/commit/44e711c))
+
+
+
 <a name="0.3.8"></a>
 ## [0.3.8](https://github.com/BioPhoton/angular-alternative-validation/compare/0.3.7...0.3.8) (2017-07-31)
 
