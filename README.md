@@ -9,8 +9,8 @@
 
 ## Demo
 
-- [x] [angular4 demo with ng-cli](https://github.com/BioPhoton/angular-alternative-validation/tree/master/examples/angular4)
-- [] [plunkr demo]()
+- [x] [angular4 demo with ng-cli](https://github.com/BioPhoton/angular-alternative-validation/tree/master/examples/angular4)  
+- [ ] [plunkr demo]()
 
 
 ![Angular-Alternative-Validation](https://raw.githubusercontent.com/BioPhoton/angular-alternative-validation/master/resources/demo.gif)
