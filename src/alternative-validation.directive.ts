@@ -42,7 +42,6 @@ function isAndroid(): boolean {
   return /android (\d+)/.test(userAgent.toLowerCase());
 }
 
-
 const CONTROL_VALUE_ACCESSOR = {
   name: 'alternativeValidationValueAccessor',
   provide: NG_VALUE_ACCESSOR,
@@ -289,7 +288,6 @@ export class AlternativeValidationDirective extends AbstractControlDirective imp
   // Reset handling ==============================================================================
 
   private setupResetObservable(control: AbstractControl): void {
-
     Observable.combineLatest(control.statusChanges, control.valueChanges)
       .takeUntil(this.destroy$.asObservable())
       .filter((controlState) => {
@@ -312,7 +310,6 @@ export class AlternativeValidationDirective extends AbstractControlDirective imp
   }
 
   private setupDisabledObservable(control: AbstractControl): void {
-
     Observable.combineLatest(control.statusChanges, control.valueChanges)
       .takeUntil(this.destroy$.asObservable())
       .map((controlState) => {
