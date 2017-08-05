@@ -1,4 +1,24 @@
 <a name="0.3.6"></a>
+## [0.3.6](https://github.com/BioPhoton/angular-alternative-validation/compare/0.3.10...0.3.6) (2017-08-05)
+
+
+### Bug Fixes
+
+* **disabled state:** implement disabled state and observable ([cf31e75](https://github.com/BioPhoton/angular-alternative-validation/commit/cf31e75))
+
+
+### Features
+
+* **first feature complete state:** first state i consider feature completeness ([cda0553](https://github.com/BioPhoton/angular-alternative-validation/commit/cda0553))
+
+
+### BREAKING CHANGES
+
+* **first feature complete state:** -)
+
+
+
+<a name="0.3.6"></a>
 ## [0.3.6](https://github.com/BioPhoton/angular-alternative-validation/compare/0.3.9...0.3.6) (2017-08-04)
 
 
