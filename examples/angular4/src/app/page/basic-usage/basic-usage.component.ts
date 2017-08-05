@@ -18,9 +18,6 @@ export class BasicUsageComponent implements OnInit, AfterViewInit {
 
 
   basicFormGroup: FormGroup;
-  nativeInput: FormControl;
-  basicInput: FormControl;
-  cfnInput: FormControl;
   altInput: FormControl;
   avNameConfig: IAlternativeValidationConfig;
 
