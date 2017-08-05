@@ -102,7 +102,7 @@ export class AlternativeValidationDirective extends AbstractControlDirective imp
   private _value: any = '';
 
   // The internal focus state
-  private _focus: boolean;
+  private _focus: boolean = false;
 
   // The internal disabled state
   private _disabled: boolean;
@@ -276,6 +276,7 @@ export class AlternativeValidationDirective extends AbstractControlDirective imp
 
     this.updateFakeControlRef(this.realFormControl.value);
     this.setupResetObservable(this.realFormControl);
+    this.setupDisabledObservable(this.realFormControl);
   }
 
   /*
@@ -310,10 +311,40 @@ export class AlternativeValidationDirective extends AbstractControlDirective imp
       })
   }
 
+  private setupDisabledObservable(control: AbstractControl): void {
+
+    Observable.combineLatest(control.statusChanges, control.valueChanges)
+      .takeUntil(this.destroy$.asObservable())
+      .map((controlState) => {
+        const disabledState = {
+          valid: false,
+          invalid: false,
+          status: 'DISABLED'
+        };
+
+        return Object
+          .keys(disabledState)
+          .reduce((state, item) => {
+            return !state ? false : control[item] === disabledState[item];
+          }, true)
+      })
+      .subscribe((isDisabled) => {
+        this.onDisableEvent(isDisabled);
+      })
+  }
+
   // Alternative validation ==============================================================================
 
   private onResetEvent(controlState) {
     this.control.reset(this.realFormControl.value);
+  }
+
+  private onDisableEvent(isDisabled: boolean) {
+    if (!isDisabled) {
+      this.control.enable();
+    } else {
+      this.control.disable();
+    }
   }
 
   private updateFakeControlRef(formState: any): void {
