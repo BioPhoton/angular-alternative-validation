@@ -20,6 +20,10 @@
             [alternativeValidation]="avNameConfig"
             #aV="alternativeValidation">
 
+          <small *ngIf="altInput.hasError('required') && altInput.touched"
+            class="form-control-feedback">
+            Input required
+          </small>
           <small *ngIf="altInput.hasError('minlength') && altInput.touched"
             class="form-control-feedback">
             A minimum length of 3 is required
@@ -38,7 +42,7 @@
           </small>
 
           <small *ngIf="aV.untouched" class="form-text text-muted">
-            Please enter the female singer that pops up in your mind.
+            Please enter a female singer that pops up first in your mind.
           </small>
 
         </div>

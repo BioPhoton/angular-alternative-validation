@@ -30,7 +30,7 @@ export class BasicUsageComponent implements OnInit, AfterViewInit {
   constructor(private fb: FormBuilder) {
     this.basicFormGroup = this.fb.group(
       {
-        alt: ['initial', Validators.minLength(3)]
+        alt: ['initial', [Validators.required, Validators.minLength(3)]]
       }
     );
 
