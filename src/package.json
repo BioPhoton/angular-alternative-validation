@@ -1,5 +1,6 @@
 {
   "name": "angular-alternative-validation",
+  "description": "Angular Alternative Validation - The smoothest way to implement validation hints/warnings for your forms",
   "version": "1.0.2",
   "repository": {
     "type": "git",
@@ -13,8 +14,16 @@
     "angular",
     "validation",
     "warning",
+    "warnings",
+    "hint",
+    "hints",
+    "validation-warning",
+    "validation-hint",
     "alternative validation",
-    "hint"
+    "directive",
+    "NG_VALIDATORS",
+    "ControlValueAccessor",
+    "AbstractControlDirective"
   ],
   "license": "MIT",
   "bugs": {

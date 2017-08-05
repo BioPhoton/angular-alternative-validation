@@ -1,6 +1,6 @@
 # angular-alternative-validation
 
-#### Angular Alternative Validation - detection validation error without changing the valid state of your control. Use it to display validation hints or warnings.
+#### Angular Alternative Validation - The smoothest way to implement validation hints/warnings for your forms
 
 ![License](https://img.shields.io/npm/l/angular-alternative-validation.svg)
 [![NPM Version](https://img.shields.io/npm/v/angular-alternative-validation.svg)](https://www.npmjs.com/package/angular-alternative-validation)
@@ -10,7 +10,7 @@
 ## Demo
 
 - [x] [angular4 demo with ng-cli](https://github.com/BioPhoton/angular-alternative-validation/tree/master/examples/angular4)  
-- [ ] [plunkr demo]()
+- [x] [plunkr demo](https://embed.plnkr.co/e3GOAFENPumfy78IWXAw/)
 
 
 ![Angular-Alternative-Validation](https://raw.githubusercontent.com/BioPhoton/angular-alternative-validation/master/resources/demo.gif)
