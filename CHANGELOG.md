@@ -1,4 +1,9 @@
 <a name="0.3.6"></a>
+## [0.3.6](https://github.com/BioPhoton/angular-alternative-validation/compare/1.0.0...0.3.6) (2017-08-05)
+
+
+
+<a name="0.3.6"></a>
 ## [0.3.6](https://github.com/BioPhoton/angular-alternative-validation/compare/0.3.10...0.3.6) (2017-08-05)
 
 
