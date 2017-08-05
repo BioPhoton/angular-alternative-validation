@@ -1,7 +1,7 @@
 import {AbstractControl, ValidationErrors} from '@angular/forms'
 
 export function validName(c: AbstractControl): ValidationErrors | null {
-  const validNames = ['Aretha', 'Ella', 'Nina', 'Etta'];
+  const validNames = ['Aretha', 'Ella', 'Etta', 'Nina'];
 
   const isValid = validNames
     .map(n => c.value && c.value.indexOf(n) !== -1)

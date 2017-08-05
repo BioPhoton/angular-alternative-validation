@@ -72,16 +72,3 @@ $fa-font-path : '../node_modules/font-awesome/fonts';
 @import '~bootstrap/scss/utilities';
 
 // ----------------------------------------------------------------- BOOTSTRAP 4
-
-
-input.ng-valid {
-  border-left-style: solid;
-  border-left-color: forestgreen;
-  border-left-width: 5px;
-}
-
-input.ng-invalid {
-  border-left-style: solid;
-  border-left-color: hotpink;
-  border-left-width: 5px;
-}

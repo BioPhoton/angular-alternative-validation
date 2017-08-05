@@ -1,7 +1,13 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core'
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms'
-import {IAlternativeValidationConfig} from 'angular-alternative-validation/struct/alternative-validation-config'
+import {
+  AbstractControl,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators
+} from '@angular/forms'
 import {AlternativeValidationDirective} from 'angular-alternative-validation'
+import {IAlternativeValidationConfig} from 'angular-alternative-validation/struct/alternative-validation-config'
 
 @Component({
   selector: 'basic-usage',
@@ -34,7 +40,6 @@ export class BasicUsageComponent implements OnInit, AfterViewInit {
         {name: 'validName'}
       ]
     };
-
   }
 
   ngOnInit() {
@@ -46,6 +51,16 @@ export class BasicUsageComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     console.log('Reference to the directive', this.ref);
+  }
+
+  getControlFeedbackName(formControl: AbstractControl, altControl: AbstractControl): string {
+    if (formControl.invalid) {
+      return 'danger';
+    } else if (altControl.invalid) {
+      return 'warning';
+    } else {
+      return 'success';
+    }
   }
 
   resetWithValue(value) {
