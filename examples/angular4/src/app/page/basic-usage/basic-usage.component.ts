@@ -54,12 +54,23 @@ export class BasicUsageComponent implements OnInit, AfterViewInit {
   }
 
   getControlFeedbackName(formControl: AbstractControl, altControl: AbstractControl): string {
+    if (formControl.disabled) {
+      return '';
+    }
     if (formControl.invalid) {
       return 'danger';
     } else if (altControl.invalid) {
       return 'warning';
     } else {
       return 'success';
+    }
+  }
+
+  toggleDisabled(control: AbstractControl) {
+    if (!control.disabled) {
+      control.disable();
+    } else {
+      control.enable();
     }
   }
 

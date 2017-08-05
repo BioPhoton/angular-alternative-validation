@@ -5,7 +5,12 @@
     </h4>
   </div>
 
-  <ng-content select="ul"></ng-content>
+  <ul *ngIf="control.errors"
+      class="card-block {{'bg-'+ errorColor}}">
+    <li *ngFor="let error of getErrors()" class="text-white">
+      <b>{{error.name}}</b>
+    </li>
+  </ul>
 
   <div class="card-block">
     <div class="row">
@@ -68,6 +73,12 @@
       <div
         class="col-3 {{control.focus?'text-success':'text-danger'}}">
         {{control.focus}}
+      </div>
+
+      <div class="col-3"><b>disabled</b></div>
+      <div
+        class="col-3 {{control.disabled?'text-success':'text-danger'}}">
+        {{control.disabled}}
       </div>
 
       <div class="col-12"><b>errors</b></div>

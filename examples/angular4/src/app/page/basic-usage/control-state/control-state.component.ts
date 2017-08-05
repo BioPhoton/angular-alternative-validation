@@ -1,19 +1,40 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core'
 import {FormControl} from '@angular/forms'
 
 @Component({
   selector: 'control-state',
-  templateUrl: './control-state.component.html'
+  templateUrl: './control-state.component.html',
+  styleUrls: ['./control-state.component.scss']
 })
-export class ControlStateComponent implements OnInit {
+export class ControlStateComponent implements OnChanges, OnInit {
 
   @Input()
   control: FormControl;
 
-  constructor() { }
+  @Input()
+  errorColor = 'danger';
+
+  ngOnChanges(changes: SimpleChanges): void {
+
+    console.log(changes);
+
+    if ('errorColor' in changes) {
+      this.errorColor = changes.errorColor.currentValue || 'danger'
+    }
+  }
 
   ngOnInit() {
 
+  }
+
+  getErrors(): any[] {
+    return Object.keys(this.control.errors)
+      .map((key) => {
+        return {
+          name: key,
+          value: this.control.errors[key]
+        }
+      })
   }
 
 }

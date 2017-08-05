@@ -44,13 +44,16 @@
         </div>
       </div>
       <div class="card-footer">
-        <button class="btn btn-primary" [disabled]="altInput.invalid"
+        <button class="btn btn-primary" [disabled]="basicFormGroup.invalid"
           type="submit">Save
         </button>
-        <button class="btn btn-secondary" type="reset">Reset</button>
+        <button class="btn btn-secondary" type="reset">Reset <small>native</small></button>
         <button class="btn btn-secondary" type="button"
-          (click)="resetWithValue('Nei')">Reset with value
+          (click)="resetWithValue('Nei')">Reset <small>via code</small>
         </button>
+
+        <button class="btn btn-secondary" type="button" (click)="toggleDisabled(altInput)">{{altInput.disabled?'Enabled':'Disable'}}</button>
+
         <input type="text" autocomplete="false"
           class="form-control pull-right col-4"
           name="any-other-focus"
@@ -64,27 +67,14 @@
 
         <control-state [control]="altInput">
           Angular control states
-          <ul *ngIf="altInput.errors && altInput.touched">
-            <li *ngIf="altInput.hasError('minlength')"
-              class="card-block bg-danger text-white">
-              <b>Minlength of 3</b>
-            </li>
-          </ul>
         </control-state>
 
       </div>
 
       <div class="col-6">
 
-        <control-state [control]="aV">
+        <control-state [control]="aV" [errorColor]="'warning'">
           Alternative control states
-          <ul *ngIf="aV.errors && aV.touched">
-            <li *ngIf="aV.hasError('validName')"
-              class="card-block bg-warning text-white">
-              <b>Names should contain
-                {{aV.getError('validName').validNames}}</b>
-            </li>
-          </ul>
         </control-state>
 
       </div>
