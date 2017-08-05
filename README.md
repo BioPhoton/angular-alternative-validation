@@ -164,14 +164,18 @@ export class BasicUsageComponent {
 
 # What it is
 
-There are many ways to build a alternative validation state. 
-Many of them can't reuse existing validators and all of them do not provide a separate state of validation. 
+There are many ways to build a alternative validation state.  
+Many of them can't reuse existing validators and all of them do not provide a separate state of validation.  
 
 What this library do is it provides an alternative state of the host control.  
 You can use it like the normal form control validation  
 but it is not effecting the actual validation of the form.  
-In this way you can reuse default validation and display user  
-information separated from the real validation.
+
+In this way you can:   
+- reuse default validators and async validators
+- treat the alternative control stated independent from the real one that effects formGroup and formControl states
+- display user hints/information separated from the error messages
+- use other libraries working with formControl logic
 
 # License
 
