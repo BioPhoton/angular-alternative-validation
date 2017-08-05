@@ -4,7 +4,12 @@ import {FormControl} from '@angular/forms'
 @Component({
   selector: 'control-state',
   templateUrl: './control-state.component.html',
-  styleUrls: ['./control-state.component.scss']
+  styles: [`
+    ul {
+      list-style: none;
+      margin-bottom:0;
+    }
+  `]
 })
 export class ControlStateComponent implements OnChanges, OnInit {
 
