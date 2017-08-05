@@ -30,7 +30,6 @@ export class BasicUsageComponent implements OnInit, AfterViewInit {
   constructor(private fb: FormBuilder) {
     this.basicFormGroup = this.fb.group(
       {
-        native: ['initial', Validators.required],
         alt: ['initial', Validators.minLength(3)]
       }
     );
@@ -43,9 +42,6 @@ export class BasicUsageComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.nativeInput = this.basicFormGroup.get('native') as FormControl
-    this.basicInput = this.basicFormGroup.get('basic') as FormControl
-    this.cfnInput = this.basicFormGroup.get('cfn') as FormControl
     this.altInput = this.basicFormGroup.get('alt') as FormControl
   }
 
@@ -76,9 +72,6 @@ export class BasicUsageComponent implements OnInit, AfterViewInit {
 
   resetWithValue(value) {
     this.basicFormGroup.reset({
-      native: 'reset',
-      basic: 'reset',
-      cfn: 'reset',
       alt: 'reset'
     })
   }
