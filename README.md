@@ -62,7 +62,6 @@ export class AppModule { }
 
 ```
 
-
 #### Create alternative validation config object
 
 ``` typescript
