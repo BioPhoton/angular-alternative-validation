@@ -170,6 +170,8 @@ What this library do is it provides an alternative state of the host control.
 You can use it like the normal form control validation  
 but it is not effecting the actual validation of the form.  
 
+It's a mix of `FormControlName`, `AbstractControlDirective`, `ControlValueAccessor`, `NG_VALIDATORS` and a little bit of `magic-glue$`.
+
 In this way you can:   
 - reuse default validators and async validators
 - treat the alternative control stated independent from the real one that effects formGroup and formControl states
