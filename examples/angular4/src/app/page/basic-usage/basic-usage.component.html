@@ -3,7 +3,7 @@
 
     <form [formGroup]="basicFormGroup" class="card">
       <div class="card-header">
-        Some Form
+        The singer survey
       </div>
       <div class="card-block">
       <!--
@@ -18,8 +18,8 @@
       -->
       <div class="form-group">
 
-          <label>Name
-            <small>(shows alternative control state independent of the angular native form control state)</small>
+          <label>Female Singer
+            <small>(shows a demo uscase for validation and hinting form input)</small>
           </label>
           <input type="text" autocomplete="false" class="form-control"
             name="alt"
@@ -88,7 +88,7 @@
           Alternative control states
           <ul *ngIf="aV.errors && aV.touched">
             <li *ngIf="aV.hasError('validName')"
-              class="card-block bg-info text-white">
+              class="card-block bg-warning text-white">
               <b>Names should contain
                 {{aV.getError('validName').validNames}}</b>
             </li>
