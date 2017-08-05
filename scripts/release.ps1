@@ -107,6 +107,6 @@ Write-Host "created github release"  -foregroundcolor "green"
 
 # publish new version on npm
  cd .\dist
- npm publish
+ # npm publish
  cd ..
 # Write-Host "published on npm :-)"  -foregroundcolor "green"
