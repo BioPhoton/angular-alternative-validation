@@ -1,4 +1,15 @@
 <a name="0.3.6"></a>
+## [0.3.6](https://github.com/BioPhoton/angular-alternative-validation/compare/1.0.3...0.3.6) (2017-08-07)
+
+
+### Bug Fixes
+
+* **cleanup code:** cleanup for imports, params, and formatting ([5027f80](https://github.com/BioPhoton/angular-alternative-validation/commit/5027f80))
+* **linting:** changed jslint.json, fixed new linting errors ([cf3ce28](https://github.com/BioPhoton/angular-alternative-validation/commit/cf3ce28))
+
+
+
+<a name="0.3.6"></a>
 ## [0.3.6](https://github.com/BioPhoton/angular-alternative-validation/compare/1.0.2...0.3.6) (2017-08-05)
 
 
