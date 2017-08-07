@@ -22,6 +22,7 @@
     "alternative validation",
     "directive",
     "NG_VALIDATORS",
+    "NG_ASYNC_VALIDATORS",
     "ControlValueAccessor",
     "AbstractControlDirective"
   ],
