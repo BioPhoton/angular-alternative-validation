@@ -12,7 +12,7 @@ import {
   Renderer2,
   SimpleChanges,
   SkipSelf
-} from '@angular/core'
+} from '@angular/core';
 import {
   AbstractControl,
   AbstractControlDirective,
@@ -21,17 +21,17 @@ import {
   ControlValueAccessor,
   FormControl,
   NG_VALUE_ACCESSOR
-} from '@angular/forms'
-import {ɵgetDOM as getDOM} from '@angular/platform-browser'
-import 'rxjs/add/observable/combineLatest'
-import 'rxjs/add/operator/filter'
-import 'rxjs/add/operator/map'
-import 'rxjs/add/operator/switchMap'
-import 'rxjs/add/operator/takeUntil'
-import {Observable} from 'rxjs/Observable'
-import {Subject} from 'rxjs/Subject'
-import {IAlternativeValidationConfig} from './struct/alternative-validation-config'
-import {ValidationCollectorService} from './validation-collector.service'
+} from '@angular/forms';
+import {ɵgetDOM as getDOM} from '@angular/platform-browser';
+import 'rxjs/add/observable/combineLatest';
+import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/takeUntil';
+import {Observable} from 'rxjs/Observable';
+import {Subject} from 'rxjs/Subject';
+import {IAlternativeValidationConfig} from './struct/alternative-validation-config';
+import {ValidationCollectorService} from './validation-collector.service';
 
 /**
  * We must check whether the agent is Android because composition events
@@ -101,7 +101,7 @@ export class AlternativeValidationDirective extends AbstractControlDirective imp
   private _value: any = '';
 
   // The internal focus state
-  private _focus: boolean = false;
+  private _focus = false;
 
   // The internal disabled state
   private _disabled: boolean;
@@ -116,10 +116,10 @@ export class AlternativeValidationDirective extends AbstractControlDirective imp
   // The config for the alternative validation in the parent
   protected config: IAlternativeValidationConfig;
 
-  onChange = (_: any) => {
-  };
-  onTouched = () => {
-  };
+  private onChange = (_: any) => {
+  }
+  private onTouched = () => {
+  }
 
   constructor(
     protected renderer: Renderer2, protected elementRef: ElementRef,
@@ -134,18 +134,18 @@ export class AlternativeValidationDirective extends AbstractControlDirective imp
   }
 
   get focus(): boolean {
-    return this._focus
+    return this._focus;
   }
 
   set focus(value: boolean) {
-    this._focus = value
+    this._focus = value;
   }
 
   /*
    * Handel formControl model changes
    */
   writeValue(value: any): void {
-    this.renderViewValue(value)
+    this.renderViewValue(value);
   }
 
   /*
@@ -216,7 +216,7 @@ export class AlternativeValidationDirective extends AbstractControlDirective imp
   // Directive lifecycle hooks ==================================================================
 
   ngOnChanges(changes: SimpleChanges) {
-    this.updateValidators()
+    this.updateValidators();
   }
 
   ngOnInit(): void {
@@ -302,11 +302,11 @@ export class AlternativeValidationDirective extends AbstractControlDirective imp
           .keys(resetState)
           .reduce((state, item) => {
             return !state ? false : control[item] === resetState[item];
-          }, true)
+          }, true);
       })
       .subscribe((controlState) => {
         this.onResetEvent(controlState);
-      })
+      });
   }
 
   private setupDisabledObservable(control: AbstractControl): void {
@@ -323,11 +323,11 @@ export class AlternativeValidationDirective extends AbstractControlDirective imp
           .keys(disabledState)
           .reduce((state, item) => {
             return !state ? false : control[item] === disabledState[item];
-          }, true)
+          }, true);
       })
       .subscribe((isDisabled) => {
         this.onDisableEvent(isDisabled);
-      })
+      });
   }
 
   // Alternative validation ==============================================================================
@@ -353,10 +353,10 @@ export class AlternativeValidationDirective extends AbstractControlDirective imp
   private updateValidators(): void {
     if (this.config && this.control && this.control instanceof AbstractControl) {
       if ('validator' in this.config && Array.isArray(this.config.validator)) {
-        this.control.setValidators(this.vs.getValidators(this.config.validator))
+        this.control.setValidators(this.vs.getValidators(this.config.validator));
       }
       if ('asyncValidator' in this.config && Array.isArray(this.config.asyncValidator)) {
-        this.control.setValidators(this.vs.getAsyncValidators(this.config.asyncValidator))
+        this.control.setValidators(this.vs.getAsyncValidators(this.config.asyncValidator));
       }
     }
   }
@@ -365,23 +365,23 @@ export class AlternativeValidationDirective extends AbstractControlDirective imp
     if (this.control) {
       this.control.setValue(value);
       this.control.updateValueAndValidity(value);
-      this.updateFakeDirty(true)
+      this.updateFakeDirty(true);
     }
   }
 
   private updateFakeTouched(isTouched: boolean): void {
     if (isTouched) {
-      this.control.markAsTouched()
+      this.control.markAsTouched();
     } else {
-      this.control.markAsUntouched()
+      this.control.markAsUntouched();
     }
   }
 
   private updateFakeDirty(isDirty: boolean): void {
     if (isDirty) {
-      this.control.markAsDirty()
+      this.control.markAsDirty();
     } else {
-      this.control.markAsPristine()
+      this.control.markAsPristine();
     }
   }
 

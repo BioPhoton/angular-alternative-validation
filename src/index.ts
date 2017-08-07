@@ -1,9 +1,9 @@
-import {CommonModule} from '@angular/common'
-import {NgModule} from '@angular/core'
-import {ReactiveFormsModule} from '@angular/forms'
+import {CommonModule} from '@angular/common';
+import {NgModule} from '@angular/core';
+import {ReactiveFormsModule} from '@angular/forms';
 
-import {AlternativeValidationDirective} from './alternative-validation.directive'
-import {ValidationCollectorService} from './validation-collector.service'
+import {AlternativeValidationDirective} from './alternative-validation.directive';
+import {ValidationCollectorService} from './validation-collector.service';
 
 export * from './alternative-validation.directive';
 export * from './validation-collector.service';
@@ -23,6 +23,6 @@ export class AlternativeValidationModule {
     return {
       ngModule: AlternativeValidationModule,
       providers: [ValidationCollectorService]
-    }
+    };
   }
 }

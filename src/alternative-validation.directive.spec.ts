@@ -1,11 +1,11 @@
-import {Component, DebugElement, ViewChild} from '@angular/core'
-import {ComponentFixture, TestBed} from '@angular/core/testing'
-import {AbstractControl, FormControl, FormGroup} from '@angular/forms'
-import {By} from '@angular/platform-browser'
-import {AlternativeValidationDirective} from './alternative-validation.directive'
-import {AlternativeValidationModule} from './index'
-import {IAlternativeValidationConfig} from './struct/alternative-validation-config'
-import {ValidationCollectorService} from './validation-collector.service'
+import {Component, DebugElement, ViewChild} from '@angular/core';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {AbstractControl, FormControl, FormGroup} from '@angular/forms';
+import {By} from '@angular/platform-browser';
+import {AlternativeValidationDirective} from './alternative-validation.directive';
+import {AlternativeValidationModule} from './index';
+import {IAlternativeValidationConfig} from './struct/alternative-validation-config';
+import {ValidationCollectorService} from './validation-collector.service';
 
 @Component({
   template: `
@@ -28,7 +28,7 @@ class TestComponent {
   };
 
   @ViewChild(AlternativeValidationDirective)
-  exposedTarget1
+  exposedTarget1;
 }
 
 describe('AlternativeValidationDirective', () => {
@@ -85,7 +85,7 @@ describe('AlternativeValidationDirective', () => {
     fixture.detectChanges();
 
     // initial state
-    target1InputControl.reset('j')
+    target1InputControl.reset('j');
     fixture.detectChanges();
     expect(target1InputControl.value).toBe('j');
     // expect(directive.exposedTarget1.hasError('minlength')).toBe(false);
