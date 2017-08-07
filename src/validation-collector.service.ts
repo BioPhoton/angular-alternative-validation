@@ -13,7 +13,8 @@ export class ValidationCollectorService {
   constructor(
     @Optional() @Inject(NG_VALIDATORS) private NG_VALIDATORS: ValidatorFn[],
     @Optional() @Inject(NG_ASYNC_VALIDATORS) private NG_ASYNC_VALIDATORS: AsyncValidatorFn[]
-  ) {}
+  ) {
+  }
 
   getValidators(validatorsConfig: IValidatorConfig[]): ValidatorFn[] {
     let validators: ValidatorFn[] = [];
@@ -28,19 +29,30 @@ export class ValidationCollectorService {
 
   getValidatorFn(validatorName: string, validatorArgs?: any[]): ValidatorFn {
     if (!validatorName) {
-      throw new Error('No validation name gives to search for');
+      throw new Error('No validation name given to search for');
     }
     const validatorFn = Validators[validatorName] || this.getCustomValidatorFn(validatorName);
 
     if (!(typeof validatorFn === 'function')) {
-      throw new Error(`validator "${validatorName}" is not provided via NG_VALIDATORS`);
+      throw new Error(`Validator "${validatorName}" is not provided via NG_VALIDATORS`);
     }
 
-    return (validatorArgs) ? validatorFn(...validatorArgs) : validatorFn;
+    const finalFunction = (validatorArgs) ? validatorFn(...validatorArgs) : validatorFn;
+
+    if (typeof finalFunction !== 'function') {
+      throw new Error(`Validator "${validatorName}" is not provided a function.
+      Did you provide params for a validator that don't need them?`);
+    }
+
+    return finalFunction;
   }
 
   getCustomValidatorFn(validatorName: string): ValidatorFn | undefined {
     let validatorFn;
+
+    if (!validatorName) {
+      throw new Error('No validation name given to search for');
+    }
 
     if (this.NG_VALIDATORS) {
       validatorFn = this.NG_VALIDATORS.find((fn) => {
@@ -65,6 +77,10 @@ export class ValidationCollectorService {
   getCustomAsyncValidatorFn(validatorName: string, validatorArgs?: any[]): AsyncValidatorFn {
     let asyncValidatorFn;
 
+    if (!validatorName) {
+      throw new Error('No asyncvalidation name given to search for');
+    }
+
     if (this.NG_ASYNC_VALIDATORS) {
 
       asyncValidatorFn = this.NG_ASYNC_VALIDATORS.find(
@@ -74,10 +90,17 @@ export class ValidationCollectorService {
     }
 
     if (!(typeof asyncValidatorFn === 'function')) {
-      throw new Error(`validator "${validatorName}" is not provided via NG_ASYNC_VALIDATORS`);
+      throw new Error(`Asyncvalidator "${validatorName}" is not provided via NG_ASYNC_VALIDATORS`);
     }
 
-    return (validatorArgs) ? asyncValidatorFn(validatorArgs) : asyncValidatorFn;
+    const finalFunction = (validatorArgs) ? asyncValidatorFn(...validatorArgs) : asyncValidatorFn;
+
+    if (typeof finalFunction !== 'function') {
+      throw new Error(`Asyncvalidator "${validatorName}" is not provided a function.
+      Did you provide params for a validator that don't need them?`);
+    }
+
+    return finalFunction;
   }
 
 }

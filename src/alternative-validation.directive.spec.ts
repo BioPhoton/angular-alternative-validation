@@ -23,8 +23,7 @@ class TestComponent {
     validator: [
       {name: 'required'},
       {name: 'minLength', params: [3]}
-    ],
-    asyncValidator: []
+    ]
   };
 
   @ViewChild(AlternativeValidationDirective)
@@ -33,7 +32,8 @@ class TestComponent {
 
 describe('AlternativeValidationDirective', () => {
 
-  let directive: TestComponent;
+  let hostComponents: TestComponent;
+  let alternativeControl: FormControl;
   let fixture: ComponentFixture<TestComponent>;
   let el: DebugElement;
 
@@ -59,37 +59,72 @@ describe('AlternativeValidationDirective', () => {
       ]
     });
     fixture = TestBed.createComponent(TestComponent);
-    directive = fixture.componentInstance;
+    hostComponents = fixture.componentInstance;
     el = fixture.debugElement;
 
     target1Input = el.query(By.css('#target1'));
-    target1InputControl = directive.fg.get('target1');
+    target1InputControl = hostComponents.fg.get('target1');
+    alternativeControl = hostComponents.exposedTarget1.control;
   });
 
   it('should create an instance', () => {
-    expect(directive).toBeTruthy();
+    fixture.detectChanges();
+    alternativeControl = hostComponents.exposedTarget1.control;
+    expect(hostComponents).toBeTruthy();
     expect(target1Input).toBeTruthy();
     expect(target1InputControl).toBeTruthy();
   });
 
+  it('should be accessable over @ViewChild', () => {
+    fixture.detectChanges();
+    alternativeControl = hostComponents.exposedTarget1.control;
+    expect(alternativeControl).toBeTruthy();
+    expect(alternativeControl.valid).toBe(false);
+  });
+
+
   it('should stay valid if input changes', () => {
     fixture.detectChanges();
+    alternativeControl = hostComponents.exposedTarget1.control;
     expect(target1InputControl.value).toBe('');
     expect(target1InputControl.valid).toBe(true);
+
     setInputValue(target1Input, '12');
     expect(target1InputControl.value).toBe('12');
     expect(target1InputControl.valid).toBe(true);
+
+    setInputValue(target1Input, '123');
+    expect(target1InputControl.value).toBe('123');
+    expect(target1InputControl.valid).toBe(true);
   });
 
-  it('should change state of alternative validation', () => {
+  it('should change state of alternative validation when input changes', () => {
     fixture.detectChanges();
+    alternativeControl = hostComponents.exposedTarget1.control;
 
-    // initial state
-    target1InputControl.reset('j');
-    fixture.detectChanges();
-    expect(target1InputControl.value).toBe('j');
-    // expect(directive.exposedTarget1.hasError('minlength')).toBe(false);
-    // expect(directive.exposedTarget1.valid).toBe(false);
+    expect(target1InputControl.value).toBe('');
+    expect(alternativeControl.value).toBe('');
+    expect(target1InputControl.valid).toBe(true);
+    expect(alternativeControl.valid).toBe(false);
+    expect(alternativeControl.hasError('required')).toBe(true);
+    expect(alternativeControl.hasError('minlength')).toBe(false);
+
+    setInputValue(target1Input, '12');
+    expect(target1InputControl.value).toBe('12');
+    expect(alternativeControl.value).toBe('12');
+    console.log(alternativeControl.errors);
+    expect(target1InputControl.valid).toBe(true);
+    expect(alternativeControl.valid).toBe(false);
+    expect(alternativeControl.hasError('required')).toBe(false);
+    expect(alternativeControl.hasError('minlength')).toBe(true);
+
+    setInputValue(target1Input, '123');
+    expect(alternativeControl.value).toBe('123');
+    expect(target1InputControl.valid).toBe(true);
+    expect(alternativeControl.valid).toBe(true);
+    expect(alternativeControl.hasError('required')).toBe(false);
+    expect(alternativeControl.hasError('minlength')).toBe(false);
   });
+
 
 });
