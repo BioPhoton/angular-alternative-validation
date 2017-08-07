@@ -1,6 +1,6 @@
 import {inject, TestBed} from '@angular/core/testing';
 import {
-  AbstractControl, AsyncValidatorFn,
+  AbstractControl,
   FormControl,
   NG_ASYNC_VALIDATORS,
   NG_VALIDATORS,
@@ -282,11 +282,6 @@ describe('ValidationCollectorService', () => {
     it('should return the function if we request a custom existing function',
       inject([ValidationCollectorService], (service: ValidationCollectorService) => {
         const config: IValidatorConfig[] = [{name: 'validName'}];
-        const validNameError = {
-          validName: {
-            validNames: ['Aretha', 'Ella', 'Etta', 'Nina']
-          }
-        };
         const customValidatorFunctions = service.getValidators(config);
         expect(typeof customValidatorFunctions).toBe('object');
         expect(customValidatorFunctions.length).toBe(1);
@@ -429,7 +424,7 @@ describe('ValidationCollectorService', () => {
 
         fc.setValue('cd');
         customAsyncValidatorFunctions[0](fc).subscribe((n) => {
-          expect(customAsyncValidatorFunctions[0](fc)).toEqual(null);
+          expect(n).toEqual(null);
         });
 
       })

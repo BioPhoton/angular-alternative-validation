@@ -116,10 +116,8 @@ export class AlternativeValidationDirective extends AbstractControlDirective imp
   // The config for the alternative validation in the parent
   protected config: IAlternativeValidationConfig;
 
-  private onChange = (_: any) => {
-  }
-  private onTouched = () => {
-  }
+  private onChange: Function = () => {};
+  private onTouched: Function = () => {};
 
   constructor(
     protected renderer: Renderer2, protected elementRef: ElementRef,
@@ -290,7 +288,7 @@ export class AlternativeValidationDirective extends AbstractControlDirective imp
   private setupResetObservable(control: AbstractControl): void {
     Observable.combineLatest(control.statusChanges, control.valueChanges)
       .takeUntil(this.destroy$.asObservable())
-      .filter((controlState) => {
+      .filter(() => {
         const resetState = {
           dirty: false,
           pristine: true,
@@ -305,14 +303,14 @@ export class AlternativeValidationDirective extends AbstractControlDirective imp
           }, true);
       })
       .subscribe((controlState) => {
-        this.onResetEvent(controlState);
+        this.onResetEvent();
       });
   }
 
   private setupDisabledObservable(control: AbstractControl): void {
     Observable.combineLatest(control.statusChanges, control.valueChanges)
       .takeUntil(this.destroy$.asObservable())
-      .map((controlState) => {
+      .map(() => {
         const disabledState = {
           valid: false,
           invalid: false,
@@ -332,7 +330,7 @@ export class AlternativeValidationDirective extends AbstractControlDirective imp
 
   // Alternative validation ==============================================================================
 
-  private onResetEvent(controlState) {
+  private onResetEvent() {
     this.control.reset(this.realFormControl.value);
   }
 
