@@ -302,7 +302,7 @@ export class AlternativeValidationDirective extends AbstractControlDirective imp
             return !state ? false : control[item] === resetState[item];
           }, true);
       })
-      .subscribe((controlState) => {
+      .subscribe(() => {
         this.onResetEvent();
       });
   }

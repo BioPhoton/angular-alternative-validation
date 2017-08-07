@@ -33,7 +33,7 @@ class TestComponent {
 describe('AlternativeValidationDirective', () => {
 
   let hostComponents: TestComponent;
-  let alternativeControl: FormControl;
+  let alternativeControl: any;
   let fixture: ComponentFixture<TestComponent>;
   let el: DebugElement;
 
@@ -126,5 +126,45 @@ describe('AlternativeValidationDirective', () => {
     expect(alternativeControl.hasError('minlength')).toBe(false);
   });
 
+  it('should track focus', () => {
+    fixture.detectChanges();
+    alternativeControl = hostComponents.exposedTarget1.control;
+    target1Input.triggerEventHandler('focus', {});
+    expect(hostComponents.exposedTarget1.focus).toBe(true);
+
+    target1Input.triggerEventHandler('blur', {});
+    expect(hostComponents.exposedTarget1.focus).toBe(false);
+
+  });
+
+  it('should be able to set disabled state', () => {
+    fixture.detectChanges();
+
+    hostComponents.exposedTarget1.setDisabledState(true);
+    expect(target1Input.properties.disabled).toBe(true);
+
+    hostComponents.exposedTarget1.setDisabledState(false);
+    expect(target1Input.properties.disabled).toBe(false);
+  });
+
+  it('should be able to get the status', () => {
+    fixture.detectChanges();
+
+    expect(hostComponents.exposedTarget1.status).toBe('INVALID');
+
+    setInputValue(target1Input, '123');
+    expect(hostComponents.exposedTarget1.status).toBe('VALID');
+  });
+
+  it('should listen on reset events', () => {
+    fixture.detectChanges();
+
+    setInputValue(target1Input, '123');
+    expect(hostComponents.exposedTarget1.status).toBe('VALID');
+
+    hostComponents.exposedTarget1.reset();
+    expect(hostComponents.exposedTarget1.status).toBe('INVALID');
+
+  });
 
 });
