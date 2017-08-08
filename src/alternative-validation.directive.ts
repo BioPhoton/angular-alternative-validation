@@ -207,6 +207,7 @@ export class AlternativeValidationDirective extends AbstractControlDirective imp
   private compositionEnd(value: any): void {
     this.composing = false;
     if (this.compositionMode) {
+      this._value = value;
       this.onChange(value);
     }
   }

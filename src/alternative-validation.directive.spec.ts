@@ -112,7 +112,7 @@ describe('AlternativeValidationDirective', () => {
     setInputValue(target1Input, '12');
     expect(target1InputControl.value).toBe('12');
     expect(alternativeControl.value).toBe('12');
-    console.log(alternativeControl.errors);
+
     expect(target1InputControl.valid).toBe(true);
     expect(alternativeControl.valid).toBe(false);
     expect(alternativeControl.hasError('required')).toBe(false);
@@ -147,6 +147,17 @@ describe('AlternativeValidationDirective', () => {
     expect(target1Input.properties.disabled).toBe(false);
   });
 
+  it('should be able to reset', () => {
+    fixture.detectChanges();
+    target1InputControl.setValue('test');
+    expect(target1InputControl.value).toBe('test');
+    expect(hostComponents.exposedTarget1.value).toBe('test');
+
+    target1InputControl.reset();
+    expect(target1InputControl.value).toBeFalsy();
+    expect(hostComponents.exposedTarget1.value).toBeFalsy();
+  });
+
   it('should be able to get the status', () => {
     fixture.detectChanges();
 
@@ -164,7 +175,11 @@ describe('AlternativeValidationDirective', () => {
 
     hostComponents.exposedTarget1.reset();
     expect(hostComponents.exposedTarget1.status).toBe('INVALID');
+  });
 
+  it('should react to composition events', () => {
+    target1Input.triggerEventHandler('compositionstart', {});
+    target1Input.triggerEventHandler('compositionend', {target: {value: 'composition events'}});
   });
 
 });
