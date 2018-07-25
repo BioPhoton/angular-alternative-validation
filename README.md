@@ -134,7 +134,7 @@ export function myValidation(param1, param2): ValidatorFn {
 @NgModule({
   ...
   providers: [
-    { provide: NG_VALIDATION, useValue: myValidation, multi: true }
+    { provide: NG_VALIDATORS, useValue: myValidation, multi: true }
   ]
   ...
 })
